@@ -17,7 +17,6 @@ def get_tweet_list(fp):
 def get_tweet_json(tweet_list):
     json_list = []
     for i in tweet_list:
-        #print(i)
         json_list.append(json.loads(i))
     return json_list  # first entry was not a tweet os it is removed here
 
@@ -37,22 +36,10 @@ def get_score_for_tweets(tweet_dict, sentiment_dict):
         if "text" in i.keys() and i['lang'] == 'en':  # not all entries are tweets in the proper form or in english
             tweet_text = i["text"]             # get the text from the tweet
             for word, score in sentiment_dict.items():         # For every word in the sentiment dictionary
-                #unicode(word, 'unicode')
-               # print(type(word), type(score), type(tweet_text))
-              #  print(word, score, tweet_text)
-              #  tweet_text = str(tweet_text.encode('utf-8'))
-               # word = str(word.encode('utf-8'))
-               # print(type(word), type(score), type(tweet_text))
                 word = word.decode('utf-8')
-               # print(type(word), type(score), type(tweet_text))
-               # print(word, score, tweet_text)
                 if tweet_text.find(word) > -1:
                     sentiment_score += score
         print(sentiment_score)
-
-
-
-
 
 def main():
     # sent_file = open(sys.argv[1])
