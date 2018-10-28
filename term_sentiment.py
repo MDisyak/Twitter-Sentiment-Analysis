@@ -45,6 +45,7 @@ def calculate_sentiment_for_new_words(tweet_dict, sentiment_dict):
 
             #  Update master word list
             for word in set(tweet_words):               # for every word in the tweets
+                word = word.lower()
                 if sentiment_score < 0:
                     if word in new_master_list_sentiment:
                         new_master_list_sentiment[word] -= 1
@@ -57,7 +58,7 @@ def calculate_sentiment_for_new_words(tweet_dict, sentiment_dict):
                         new_master_list_sentiment[word] = 1
 
     for key in new_master_list_sentiment:
-        print(str(key.encode('utf-8')), new_master_list_sentiment[key])
+        print(str(key.encode('ascii', 'ignore')), new_master_list_sentiment[key])
 
 
 def main():
