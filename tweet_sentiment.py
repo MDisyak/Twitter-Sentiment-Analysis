@@ -31,11 +31,11 @@ def get_sentiment_dict():
 
 
 def get_score_for_tweets(tweet_dict, sentiment_dict):
-    for i in tweet_dict:                        # For every tweet
+    for i in tweet_dict:                                # For every tweet
         sentiment_score = 0
-        if "text" in i.keys() and i['lang'] == 'en':  # not all entries are tweets in the proper form or in english
-            tweet_text = i["text"]             # get the text from the tweet
-            for word, score in sentiment_dict.items():         # For every word in the sentiment dictionary
+        if "text" in i.keys() and i['lang'] == 'en':    # not all entries are tweets in the proper form or in english
+            tweet_text = i["text"]                      # get the text from the tweet
+            for word, score in sentiment_dict.items():  # For every word in the sentiment dictionary
                 word = word.decode('utf-8')
                 if tweet_text.find(word) > -1:
                     sentiment_score += score
@@ -43,13 +43,13 @@ def get_score_for_tweets(tweet_dict, sentiment_dict):
 
 def main():
     # sent_file = open(sys.argv[1])
-    tweet_file = open("newline_output.txt")
+    tweet_file = open("output.txt")
     # hw()
     # lines(sent_file)
     # lines(tweet_file)
     sent_dict = get_sentiment_dict()
     tweet_list = get_tweet_list(tweet_file)
-    print(len(tweet_list))
+   # print(len(tweet_list))
     tweet_list_json = get_tweet_json(tweet_list)
     get_score_for_tweets(tweet_list_json, sent_dict)
 
