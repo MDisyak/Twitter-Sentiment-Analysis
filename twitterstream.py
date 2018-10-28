@@ -1,6 +1,7 @@
 import oauth2 as oauth
 import urllib2 as urllib
 import json
+import tweet_sentiment
 
 # See assignment1.html instructions or README for how to get these credentials
 
@@ -26,11 +27,13 @@ https_handler = urllib.HTTPSHandler(debuglevel=_debug)
 Construct, sign, and open a twitter request
 using the hard-coded credentials above.
 '''
+
+
 def twitterreq(url, method, parameters):
   req = oauth.Request.from_consumer_and_token(oauth_consumer,
                                              token=oauth_token,
                                              http_method=http_method,
-                                             http_url=url, 
+                                             http_url=url,
                                              parameters=parameters)
 
   req.sign_request(signature_method_hmac_sha1, oauth_consumer, oauth_token)
@@ -48,15 +51,37 @@ def twitterreq(url, method, parameters):
   opener.add_handler(https_handler)
 
   response = opener.open(url, encoded_post_data)
-
   return response
 
+def fetchsamplesmain():
+    url = "https://stream.twitter.com/1.1/statuses/sample.json"
+    parameters = []
+    response = twitterreq(url, "GET", parameters)
+    samples = []
+    file = open("output.txt", "w")
+    i = 0
+    for line in response:
+        file.write(line.strip()+"\n")
+        print(i)
+        i += 1
+        samples.append(line.strip())
+        if i >= 10000:
+            break
+    return samples
+
 def fetchsamples():
-  url = "https://stream.twitter.com/1.1/statuses/sample.json"
-  parameters = []
-  response = twitterreq(url, "GET", parameters)
-  for line in response:
-    print line.strip()
+    url = "https://stream.twitter.com/1.1/statuses/sample.json"
+    parameters = []
+    response = twitterreq(url, "GET", parameters)
+    for line in response:
+        print(line.strip())
+
+def main():
+  samples = fetchsamplesmain()
+  tweet_json = tweet_sentiment.get_tweet_json(samples)
+  print("length is", len(tweet_json))
+  #tweet_sentiment.get_score_for_tweet(tweet_json)
 
 if __name__ == '__main__':
-  fetchsamples()
+   main()
+   #fetchsamples()
